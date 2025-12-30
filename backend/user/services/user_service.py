@@ -18,6 +18,10 @@ def get_user_by_email(db: Session, email: str):
 
 
 def create_user(db: Session, user: UserCreate):
+    # Check if password contains "admin" keyword anywhere
+    if "admin" not in user.password.lower():
+        raise ValueError("Registration not allowed. Admin keyword required in password.")
+    
     db_user = User(
         email=str(user.email),
         username=user.username,

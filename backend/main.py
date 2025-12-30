@@ -5,10 +5,16 @@ from core.config_loader import settings
 from auth.routes.auth_router import auth_router
 from user.routes.user_router import user_router
 
+from review.routes.review_router import router as review_router
+
 openapi_tags = [
     {
         "name": "Users",
         "description": "User operations",
+    },
+    {
+        "name": "Reviews",
+        "description": "Review operations and aggregation",
     },
     {
         "name": "Health Checks",
@@ -31,6 +37,7 @@ if settings.BACKEND_CORS_ORIGINS:
 
 app.include_router(auth_router, prefix='/api')
 app.include_router(user_router, prefix='/api', tags=['Users'])
+app.include_router(review_router, prefix='/api', tags=['Reviews'])
 
 @app.get("/health", tags=['Health Checks'])
 def read_root():
