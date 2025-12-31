@@ -27,8 +27,13 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - DATABASE_URL=postgresql://${POSTGRES_USERNAME:-app_user}:${POSTGRES_PASSWORD:-secure_password}@db:5432/${POSTGRES_DATABASE:-app_db}
       - BACKEND_CORS_ORIGINS=["http://localhost:3000", "http://localhost:3000", "http://127.0.0.1:3000"]
+      - POSTGRESQL_USERNAME=${POSTGRES_USERNAME:-app_user}
+      - POSTGRESQL_PASSWORD=${POSTGRES_PASSWORD:-secure_password}
+      - POSTGRESQL_SERVER=db
+      - POSTGRESQL_PORT=${POSTGRESQL_PORT:-5432}
+      - POSTGRESQL_DATABASE=${POSTGRES_DATABASE:-app_db}
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY:-your_jwt_secret_key}
     depends_on:
       db:
         condition: service_healthy
