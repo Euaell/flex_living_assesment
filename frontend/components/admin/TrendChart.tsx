@@ -15,6 +15,13 @@ export const TrendChart = ({ stats }: TrendChartProps) => {
         value: count
     }));
 
+    // Ensure we have ratings for 1-5 stars, even if count is 0
+    const allRatings = ['1', '2', '3', '4', '5'];
+    const completeRatings = allRatings.map(rating => ({
+        name: `${rating} Stars`,
+        value: stats.by_rating[rating] || 0
+    }));
+
     const option = {
         title: {
             text: 'Rating Distribution',
@@ -25,7 +32,8 @@ export const TrendChart = ({ stats }: TrendChartProps) => {
             }
         },
         tooltip: {
-            trigger: 'item'
+            trigger: 'item',
+            formatter: '{a} <br/>{b}: {c} ({d}%)'
         },
         legend: {
             orient: 'vertical',
@@ -39,7 +47,7 @@ export const TrendChart = ({ stats }: TrendChartProps) => {
                 name: 'Reviews',
                 type: 'pie',
                 radius: '70%',
-                data: ratings,
+                data: completeRatings,
                 emphasis: {
                     itemStyle: {
                         shadowBlur: 10,
@@ -60,7 +68,7 @@ export const TrendChart = ({ stats }: TrendChartProps) => {
     };
 
     return (
-        <Card className="p-6 mb-8">
+        <Card className="p-6">
             <ReactECharts option={option} style={{ height: '300px' }} />
         </Card>
     );

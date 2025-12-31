@@ -42,6 +42,12 @@ class ReviewStatsResponse(BaseModel):
     average_rating: float
     by_channel: dict[str, int]  # channel_id -> count
     by_rating: dict[str, int]  # rating -> count
+    # New trend analysis fields
+    by_date: dict[str, int]  # date -> count
+    by_month: dict[str, int]  # month -> count
+    by_channel_rating: dict[str, float]  # channel_id -> average rating
+    rating_trend: list[dict]  # list of {date: str, avg_rating: float}
+    visibility_by_channel: dict[str, dict[str, int]]  # channel_id -> {visible: count, hidden: count}
 
 
 class VisibilityToggleRequest(BaseModel):

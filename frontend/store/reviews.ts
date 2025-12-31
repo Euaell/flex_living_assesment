@@ -100,6 +100,7 @@ export const useReviewsStore = create<ReviewsState>((set, get) => ({
             set({ stats: response });
         } catch (err: any) {
             console.error("Failed to fetch stats", err);
+            set({ error: err.message });
         }
     },
 

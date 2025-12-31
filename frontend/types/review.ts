@@ -26,6 +26,12 @@ export interface ReviewStats {
     average_rating: number;
     by_channel: Record<string, number>;
     by_rating: Record<string, number>;
+    // New trend analysis fields
+    by_date: Record<string, number>;
+    by_month: Record<string, number>;
+    by_channel_rating: Record<string, number>;
+    rating_trend: Array<{ date: string; avg_rating: number }>;
+    visibility_by_channel: Record<string, { visible: number; hidden: number }>;
 }
 
 export interface ReviewFilters {
