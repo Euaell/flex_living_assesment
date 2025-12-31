@@ -68,7 +68,7 @@ export const TrendChart = ({ stats }: TrendChartProps) => {
     };
 
     return (
-        <Card className="p-6">
+        <Card className="p-6 h-full">
             <ReactECharts option={option} style={{ height: '300px' }} />
         </Card>
     );

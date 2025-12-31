@@ -13,6 +13,8 @@ import { PropertyHero } from "@/components/property/PropertyHero";
 import { PropertyHeader } from "@/components/property/PropertyHeader";
 import { PropertyInfo } from "@/components/property/PropertyInfo";
 import { PropertyAmenities } from "@/components/property/PropertyAmenities";
+import { PropertyPolicies } from "@/components/property/PropertyPolicies";
+import { PropertyLocation } from "@/components/property/PropertyLocation";
 import { BookingCard } from "@/components/property/BookingCard";
 import { ReviewsPagination } from "@/components/ReviewsPagination";
 
@@ -72,6 +74,8 @@ export default function PropertyPage({ params }: { params: Promise<{ id: string 
                         <PropertyInfo />
                         <PropertyAmenities />
 
+                        <PropertyPolicies />
+
                         {/* Reviews Section */}
                         <section id="reviews" className="scroll-mt-24 pt-12">
                             <div className="flex items-center gap-2 mb-8">
@@ -106,6 +110,8 @@ export default function PropertyPage({ params }: { params: Promise<{ id: string 
                                 <ReviewsPagination />
                             )}
                         </section>
+
+                        <PropertyLocation />
                     </div>
 
                     {/* Right Column: Sticky Booking Card */}
@@ -113,7 +119,7 @@ export default function PropertyPage({ params }: { params: Promise<{ id: string 
                         <BookingCard rating={averageRating} reviews={total} />
                     </div>
                 </div>
-            </main>
-        </div>
+            </main >
+        </div >
     );
 }

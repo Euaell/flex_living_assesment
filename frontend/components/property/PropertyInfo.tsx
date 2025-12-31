@@ -1,21 +1,19 @@
+import { Button } from "@/components/ui/Button";
+
 export function PropertyInfo() {
     return (
-        <div className="py-8 border-b border-gray-100">
-            <h3 className="text-xl font-serif text-flex-green mb-4">About this home</h3>
-            <div className="space-y-4 text-gray-600 leading-relaxed">
+        <div className="p-8 bg-white rounded-xl shadow-[0_2px_8px_rgba(0,0,0,0.08)] mb-8 border border-gray-100">
+            <h3 className="text-xl font-bold font-serif text-gray-900 mb-4">About this property</h3>
+            <div className="space-y-4 text-gray-600 leading-relaxed mb-4">
                 <p>
-                    Experience the best of London living in this beautifully designed apartment.
-                    Located in the heart of Fulham, you're just steps away from trendy cafes,
-                    boutique shops, and excellent transport links.
-                </p>
-                <p>
-                    The space features modern amenities, luxury furnishings, and everything you need for a comfortable stay.
-                    Enjoy the private garden, perfect for morning coffee or evening relaxation.
-                </p>
-                <p>
-                    Whether you are traveling for business or leisure, this apartment offers the perfect blend of comfort and convenience.
+                    This 2-bedroom property in Fulham is perfect for families or groups, accommodating up to 5 people.
+                    The first bedroom has a king-size bed for two, while the second has a double bed for two. There's
+                    also an extra single bed in the living room. With two bathrooms, a fully equipped kitchen, a balcony...
                 </p>
             </div>
+            <Button variant="ghost" className="text-flex-green font-medium hover:bg-transparent p-0 h-auto">
+                Read more
+            </Button>
         </div>
     );
 }

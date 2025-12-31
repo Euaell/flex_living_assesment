@@ -5,13 +5,8 @@ import { useReviewsStore } from "@/store/reviews";
 import { ReviewCard } from "@/components/ReviewCard";
 import { FilterBar } from "@/components/FilterBar";
 import { StatsCards } from "@/components/admin/StatsCards";
-import { TrendChart } from "@/components/admin/TrendChart";
-import { MonthlyTrendChart } from "@/components/admin/MonthlyTrendChart";
-import { ChannelComparisonChart } from "@/components/admin/ChannelComparisonChart";
 import { RatingTrendChart } from "@/components/admin/RatingTrendChart";
-import { VisibilityByChannelChart } from "@/components/admin/VisibilityByChannelChart";
-import { Button } from "@/components/ui/Button";
-import { RefreshCw } from "lucide-react";
+import { ReviewsPagination } from "@/components/ReviewsPagination";
 
 export default function AdminDashboard() {
     const {
@@ -22,7 +17,6 @@ export default function AdminDashboard() {
         error,
         fetchReviews,
         fetchStats,
-        syncReviews,
         toggleVisibility
     } = useReviewsStore();
 
@@ -31,18 +25,10 @@ export default function AdminDashboard() {
         fetchStats();
     }, [fetchReviews, fetchStats]);
 
-    const handleSync = async () => {
-        await syncReviews();
-    };
-
     return (
         <div>
-            <div className="flex justify-between items-center mb-6">
+            <div className="mb-6">
                 <h1 className="text-2xl font-bold text-gray-900">Reviews Overview ({total})</h1>
-                <Button onClick={handleSync} disabled={loading} variant="primary">
-                    <RefreshCw size={16} className={`mr-2 ${loading ? 'animate-spin' : ''}`} />
-                    {loading ? 'Syncing...' : 'Sync Reviews'}
-                </Button>
             </div>
 
             {error && (
@@ -53,50 +39,44 @@ export default function AdminDashboard() {
 
             <StatsCards stats={stats} />
 
-            {/* Trend Analysis Charts */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-                <div className="lg:col-span-1">
-                    <TrendChart stats={stats} />
-                </div>
-                <div className="lg:col-span-1">
+            {/* Chart and Review List Side by Side */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div className="lg:col-span-1 h-96">
                     <RatingTrendChart stats={stats} />
                 </div>
-            </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                {/* Review Management Section */}
                 <div className="lg:col-span-1">
-                    <MonthlyTrendChart stats={stats} />
-                </div>
-                <div className="lg:col-span-1">
-                    <ChannelComparisonChart stats={stats} />
-                </div>
-            </div>
+                    <div className="bg-white rounded-lg shadow p-6 h-full flex flex-col">
+                        <div className="flex justify-between items-center mb-6">
+                            <h2 className="text-xl font-semibold text-gray-800">Review Management ({total})</h2>
+                        </div>
 
-            <div className="mb-8">
-                <VisibilityByChannelChart stats={stats} />
-            </div>
+                        <div className="mb-6 flex-1">
+                            <FilterBar />
+                        </div>
 
-            {/* Review Management Section */}
-            <div className="bg-white rounded-lg shadow p-6">
-                <h2 className="text-xl font-semibold text-gray-800 mb-6">Review Management</h2>
+                        <div className="space-y-4 mb-4 flex-1 overflow-y-auto max-h-96">
+                            {reviews.length === 0 && !loading ? (
+                                <p className="text-center text-gray-500 py-10">No reviews found.</p>
+                            ) : (
+                                reviews.map(review => (
+                                    <ReviewCard
+                                        key={review.id}
+                                        review={review}
+                                        isAdmin
+                                        onToggleVisibility={toggleVisibility}
+                                    />
+                                ))
+                            )}
+                        </div>
 
-                <div className="mb-6">
-                    <FilterBar />
-                </div>
-
-                <div className="space-y-4">
-                    {reviews.length === 0 && !loading ? (
-                        <p className="text-center text-gray-500 py-10">No reviews found. Try syncing.</p>
-                    ) : (
-                        reviews.map(review => (
-                            <ReviewCard
-                                key={review.id}
-                                review={review}
-                                isAdmin
-                                onToggleVisibility={toggleVisibility}
-                            />
-                        ))
-                    )}
+                        <div className="mt-auto">
+                            <div className="flex justify-center">
+                                <ReviewsPagination />
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

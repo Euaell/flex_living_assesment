@@ -3,7 +3,7 @@ import { StarRating } from "./StarRating";
 import { SourceBadge } from "./SourceBadge";
 import { formatDate } from "@/utils/cn";
 import { Eye, EyeOff } from "lucide-react";
-import { Button } from "./ui/Button";
+import Switch from "./ui/Switch";
 
 interface ReviewCardProps {
     review: Review;
@@ -12,6 +12,12 @@ interface ReviewCardProps {
 }
 
 export const ReviewCard = ({ review, isAdmin, onToggleVisibility }: ReviewCardProps) => {
+    const handleVisibilityChange = (checked: boolean) => {
+        if (onToggleVisibility) {
+            onToggleVisibility(review.id, checked);
+        }
+    };
+
     return (
         <div className={`py-8 border-b border-gray-100 ${!review.is_displayed && isAdmin ? 'opacity-50' : ''}`}>
             <div className="flex justify-between items-start mb-3">
@@ -24,36 +30,28 @@ export const ReviewCard = ({ review, isAdmin, onToggleVisibility }: ReviewCardPr
                         <p className="text-xs text-gray-500">{formatDate(review.submitted_at)}</p>
                     </div>
                 </div>
-                <div className="flex flex-col items-end gap-1">
-                    <StarRating rating={review.rating} size={14} />
-                    <SourceBadge channelId={review.channel_id} />
+                <div className="flex items-center gap-3">
+                    <div className="flex flex-col items-end gap-1">
+                        <StarRating rating={review.rating} size={14} />
+                        <SourceBadge channelId={review.channel_id} />
+                    </div>
+                    {isAdmin && onToggleVisibility && (
+                        <div className="flex items-center">
+                            <span className="text-xs mr-2 text-gray-500">
+                                {review.is_displayed ? 'Visible' : 'Hidden'}
+                            </span>
+                            <Switch
+                                checked={review.is_displayed}
+                                onChange={handleVisibilityChange}
+                            />
+                        </div>
+                    )}
                 </div>
             </div>
 
             <p className="text-gray-600 leading-relaxed text-sm mt-4">
                 {review.public_review || "No written review provided."}
             </p>
-
-            {isAdmin && onToggleVisibility && (
-                <div className="flex justify-end mt-4">
-                    <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => onToggleVisibility(review.id, review.is_displayed)}
-                        className={review.is_displayed ? "text-green-600 hover:text-green-700 hover:bg-green-50" : "text-gray-400 hover:text-gray-500"}
-                    >
-                        {review.is_displayed ? (
-                            <>
-                                <Eye size={14} className="mr-1.5" /> Visible
-                            </>
-                        ) : (
-                            <>
-                                <EyeOff size={14} className="mr-1.5" /> Hidden
-                            </>
-                        )}
-                    </Button>
-                </div>
-            )}
         </div>
     );
 };

@@ -91,7 +91,7 @@ export const VisibilityByChannelChart = ({ stats }: VisibilityByChannelChartProp
     };
 
     return (
-        <Card className="p-6">
+        <Card className="p-6 h-full">
             <ReactECharts option={option} style={{ height: '400px', width: '100%' }} />
         </Card>
     );

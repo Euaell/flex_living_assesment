@@ -90,7 +90,7 @@ export const RatingTrendChart = ({ stats }: RatingTrendChartProps) => {
     };
 
     return (
-        <Card className="p-6">
+        <Card className="p-6 h-full">
             <ReactECharts option={option} style={{ height: '350px', width: '100%' }} />
         </Card>
     );

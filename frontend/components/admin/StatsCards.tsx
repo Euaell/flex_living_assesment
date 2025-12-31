@@ -1,4 +1,4 @@
-import { ReviewStats } from "@/types/review";
+import { ReviewStats, CHANNEL_MAP } from "@/types/review";
 import { Card } from "@/components/ui/Card";
 import { Star, MessageSquare, Globe } from "lucide-react";
 
@@ -45,7 +45,7 @@ export const StatsCards = ({ stats }: StatsCardsProps) => {
                         <div className="flex gap-2 text-sm text-gray-600 mt-1">
                             {Object.entries(stats.by_channel).map(([id, count]) => (
                                 <span key={id} className="bg-gray-100 px-2 py-0.5 rounded text-xs">
-                                    {count}
+                                    {CHANNEL_MAP[parseInt(id)]?.label || `Channel ${id}`}
                                 </span>
                             ))}
                         </div>
