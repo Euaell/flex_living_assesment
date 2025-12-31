@@ -12,7 +12,6 @@ import { VisibilityByChannelChart } from "@/components/admin/VisibilityByChannel
 export default function AdminInsights() {
     const {
         stats,
-        loading,
         error,
         fetchStats
     } = useReviewsStore();

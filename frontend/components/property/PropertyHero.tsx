@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import { Grid, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 
@@ -25,7 +24,7 @@ export function PropertyHero() {
     };
 
     return (
-        <div className="relative rounded-xl overflow-hidden h-[300px] md:h-[500px]">
+        <div className="relative rounded-xl overflow-hidden h-75 lg:h-125">
             {/* Desktop Grid View */}
             <div className="hidden md:grid grid-cols-4 grid-rows-2 gap-2 h-full">
                 <div className="col-span-2 row-span-2 relative bg-gray-200">
@@ -51,7 +50,7 @@ export function PropertyHero() {
             </div>
 
             {/* Mobile Slideshow */}
-            <div className="md:hidden relative h-full bg-gray-200 group">
+            <div className="lg:hidden relative h-full bg-gray-200 group">
                 <div className="absolute inset-0 flex items-center justify-center text-gray-500 font-medium">
                     {/* Placeholder for actual image */}
                     Image {currentSlide + 1}

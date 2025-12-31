@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { apiRequest } from '@/utils/api';
+import { throttle } from '@/utils/throttle';
 import { Review, ReviewFilters, ReviewResponse, ReviewStats } from '@/types/review';
 
 interface ReviewsState {
@@ -15,6 +16,7 @@ interface ReviewsState {
     // Auth
     token: string | null;
     isAuthenticated: boolean;
+    pageLoading: boolean;
     login: (token: string) => void;
     logout: () => void;
 
@@ -33,6 +35,7 @@ export const useReviewsStore = create<ReviewsState>((set, get) => ({
     stats: null,
     loading: false,
     error: null,
+    pageLoading: typeof window === 'undefined',
     filters: {
         sort_by: 'submitted_at',
         sort_desc: true,
@@ -121,28 +124,36 @@ export const useReviewsStore = create<ReviewsState>((set, get) => ({
         }
     },
 
-    toggleVisibility: async (id, is_displayed) => {
-        // Optimistic update
-        set((state) => ({
-            reviews: state.reviews.map(r => r.id === id ? { ...r, is_displayed } : r)
-        }));
+    toggleVisibility: (() => {
+        // Create a throttled function that persists
+        const throttledApiCall = throttle(async (id: number, is_displayed: boolean) => {
+            const { token } = get();
+            if (!token) return;
 
-        const { token } = get();
-        if (!token) return;
+            try {
+                await apiRequest(`/reviews/${id}/visibility`, {
+                    method: 'PATCH',
+                    body: { is_displayed },
+                    token
+                });
+                // Refresh stats as they might depend on visibility? No, stats are total.
+            } catch (err: any) {
+                // Revert on error - need to get fresh state for error handling
+                set((state) => ({
+                    reviews: state.reviews.map(r => r.id === id ? { ...r, is_displayed: !is_displayed } : r),
+                    error: err.message
+                }));
+            }
+        }, 1000); // 1 second throttle
 
-        try {
-            await apiRequest(`/reviews/${id}/visibility`, {
-                method: 'PATCH',
-                body: { is_displayed },
-                token
-            });
-            // Refresh stats as they might depend on visibility? No, stats are total.
-        } catch (err: any) {
-            // Revert on error
+        return async (id: number, is_displayed: boolean) => {
+            // Immediate UI update (optimistic update)
             set((state) => ({
-                reviews: state.reviews.map(r => r.id === id ? { ...r, is_displayed: !is_displayed } : r),
-                error: err.message
+                reviews: state.reviews.map(r => r.id === id ? { ...r, is_displayed } : r)
             }));
-        }
-    }
+
+            // Throttled API call
+            throttledApiCall(id, is_displayed);
+        };
+    })()
 }));

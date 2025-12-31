@@ -2,8 +2,8 @@
 
 import { useReviewsStore } from "@/store/reviews";
 import { LoginForm } from "@/components/admin/LoginForm";
-import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/Button";
+import Loader from "@/components/ui/Loader";
 import Link from "next/link";
 import { LayoutDashboard, ExternalLink, LogOut } from "lucide-react";
 
@@ -12,14 +12,11 @@ export default function AdminLayout({
 }: {
     children: React.ReactNode;
 }) {
-    const { isAuthenticated, logout } = useReviewsStore();
-    const [mounted, setMounted] = useState(false);
+    const { isAuthenticated, logout, pageLoading } = useReviewsStore();
 
-    useEffect(() => {
-        setMounted(true);
-    }, []);
-
-    if (!mounted) return null;
+    if (pageLoading) {
+        return <Loader />;
+    }
 
     if (!isAuthenticated) {
         return <LoginForm />;
@@ -31,7 +28,7 @@ export default function AdminLayout({
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between h-16">
                         <div className="flex">
-                            <div className="flex-shrink-0 flex items-center">
+                            <div className="shrink-0 flex items-center">
                                 <span className="text-xl font-bold text-gray-900">Flex Living Admin</span>
                             </div>
                             <div className="hidden sm:ml-6 sm:flex sm:space-x-8">

@@ -1,12 +1,10 @@
 "use client"
 
-import { useEffect, use } from "react";
+import { useEffect } from "react";
 import { useReviewsStore } from "@/store/reviews";
 import { ReviewCard } from "@/components/ReviewCard";
 import { FilterBar } from "@/components/FilterBar";
-import Link from "next/link";
 import { Star } from "lucide-react";
-import { Button } from "@/components/ui/Button";
 
 // New Components
 import { Navbar } from "@/components/Navbar";
@@ -19,8 +17,7 @@ import { PropertyLocation } from "@/components/property/PropertyLocation";
 import { BookingCard } from "@/components/property/BookingCard";
 import { ReviewsPagination } from "@/components/ReviewsPagination";
 
-export default function PropertyPage({ params }: { params: Promise<{ id: string }> }) {
-    const resolvedParams = use(params);
+export default function PropertyPage() {
 
     const {
         reviews,
@@ -36,7 +33,7 @@ export default function PropertyPage({ params }: { params: Promise<{ id: string 
         setFilters({ is_displayed: true, page: 1, limit: 5 }); // Default to 5 per page
         fetchReviews(); // is_displayed is already in default filters? no, setFilters updates it.
         fetchStats();
-    }, []);
+    }, [fetchReviews, fetchStats, setFilters]);
 
     const averageRating = stats?.average_rating || 0;
 

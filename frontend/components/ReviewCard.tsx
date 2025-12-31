@@ -2,7 +2,6 @@ import { Review } from "@/types/review";
 import { StarRating } from "./StarRating";
 import { SourceBadge } from "./SourceBadge";
 import { formatDate } from "@/utils/cn";
-import { Eye, EyeOff } from "lucide-react";
 import Switch from "./ui/Switch";
 
 interface ReviewCardProps {
