@@ -9,6 +9,8 @@ interface ReviewsState {
     loading: boolean;
     error: string | null;
     filters: ReviewFilters;
+    page: number;
+    limit: number;
 
     // Auth
     token: string | null;
@@ -22,6 +24,7 @@ interface ReviewsState {
     syncReviews: () => Promise<void>;
     toggleVisibility: (id: number, is_displayed: boolean) => Promise<void>;
     setFilters: (filters: Partial<ReviewFilters>) => void;
+    setPage: (page: number) => void;
 }
 
 export const useReviewsStore = create<ReviewsState>((set, get) => ({
@@ -34,6 +37,8 @@ export const useReviewsStore = create<ReviewsState>((set, get) => ({
         sort_by: 'submitted_at',
         sort_desc: true,
     },
+    page: 1,
+    limit: 5,
 
     token: typeof window !== 'undefined' ? localStorage.getItem('token') : null,
     isAuthenticated: typeof window !== 'undefined' ? !!localStorage.getItem('token') : false,
@@ -49,7 +54,12 @@ export const useReviewsStore = create<ReviewsState>((set, get) => ({
     },
 
     setFilters: (newFilters) => {
-        set((state) => ({ filters: { ...state.filters, ...newFilters } }));
+        set((state) => ({ filters: { ...state.filters, ...newFilters }, page: 1 })); // Reset to page 1 on filter change
+        get().fetchReviews();
+    },
+
+    setPage: (page) => {
+        set({ page });
         get().fetchReviews();
     },
 
@@ -66,6 +76,13 @@ export const useReviewsStore = create<ReviewsState>((set, get) => ({
             if (currentFilters.is_displayed !== undefined) searchParams.append('is_displayed', String(currentFilters.is_displayed));
             if (currentFilters.sort_by) searchParams.append('sort_by', currentFilters.sort_by);
             if (currentFilters.sort_desc !== undefined) searchParams.append('sort_desc', String(currentFilters.sort_desc));
+
+            const page = get().page;
+            const limit = get().limit;
+            const skip = (page - 1) * limit;
+
+            searchParams.append('skip', String(skip));
+            searchParams.append('limit', String(limit));
 
             const response = await apiRequest<ReviewResponse>(`/reviews/?${searchParams.toString()}`, {
                 token: token || undefined

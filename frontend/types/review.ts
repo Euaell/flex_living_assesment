@@ -34,6 +34,8 @@ export interface ReviewFilters {
     is_displayed?: boolean;
     sort_by?: 'submitted_at' | 'rating';
     sort_desc?: boolean;
+    page?: number;
+    limit?: number;
 }
 
 export const CHANNEL_MAP: Record<number, { name: string; label: string }> = {
