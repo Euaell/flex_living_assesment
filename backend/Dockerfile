@@ -1,24 +1,18 @@
-FROM python:3.12-slim-bookworm
-
-# Install uv (latest version)
-COPY --from=ghcr.io/astral-sh/uv:latest /uv /bin/uv
+FROM python:3.14-slim
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
 WORKDIR /app
 
-# Enable bytecode compilation
-ENV UV_COMPILE_BYTECODE=1
+RUN --mount=type=cache,target=/root/.cache/uv \
+    --mount=type=bind,source=uv.lock,target=uv.lock \
+    --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
+    uv sync --frozen --no-install-workspace
 
-# Copy project dependencies
-COPY pyproject.toml uv.lock ./
+COPY . /app
 
-# Install dependencies
-RUN uv sync --frozen --no-cache
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv sync --locked
 
-# Copy application code
-COPY . .
-
-# Expose port
 EXPOSE 8000
 
-# Run the application
-CMD ["uv", "run", "fastapi", "run", "main.py", "--port", "8000", "--host", "0.0.0.0"]
+CMD ["uv", "run", "backend.main:app", "--host", "0.0.0.0", "--port", "8000"]

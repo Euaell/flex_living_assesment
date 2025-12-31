@@ -74,5 +74,9 @@ bun run dev
 
 Environment variables can be configured in `.env` files within the `backend` and `frontend` directories. Refer to `.env.example` in the backend directory for required database configuration.
 
+## AI tools used
+- GitHub Copilot
+- Qwen Coder
+
 ## ⚖️ License
 Assessment Project

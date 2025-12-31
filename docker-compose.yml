@@ -1,47 +1,55 @@
 services:
   db:
-    image: bitnami/postgresql:17.4.0
-    platform: linux/amd64
+    image: postgres:18-alpine
+    container_name: app_postgres_db
     ports:
-      - ${POSTGRESQL_PORT}:5432
+      - ${POSTGRESQL_PORT:-5435}:5432
     restart: always
     volumes:
-      - db-data:/bitnami/postgresql
+      - db-data:/var/lib/postgresql/data
     environment:
-      - POSTGRESQL_DATABASE=${POSTGRESQL_DATABASE}
-      - POSTGRESQL_USERNAME=${POSTGRESQL_USERNAME}
-      - POSTGRESQL_PASSWORD=${POSTGRESQL_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DATABASE:-app_db}
+      - POSTGRES_USER=${POSTGRES_USERNAME:-app_user}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-secure_password}
     networks:
       - docker-fastapi-base
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USERNAME:-app_user} -d ${POSTGRES_DATABASE:-app_db}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   backend:
     build:
       context: ./backend
       dockerfile: Dockerfile
+    container_name: app_fastapi_backend
     ports:
       - "8000:8000"
     environment:
-      - DATABASE_URL=postgresql://${POSTGRESQL_USERNAME}:${POSTGRESQL_PASSWORD}@db:5432/${POSTGRESQL_DATABASE}
-      - BACKEND_CORS_ORIGINS=["http://localhost:3000"]
+      - DATABASE_URL=postgresql://${POSTGRES_USERNAME:-app_user}:${POSTGRES_PASSWORD:-secure_password}@db:5432/${POSTGRES_DATABASE:-app_db}
+      - BACKEND_CORS_ORIGINS=["http://localhost:3000", "http://localhost:3000", "http://127.0.0.1:3000"]
     depends_on:
-      - db
-    volumes:
-      - ./backend:/app
+      db:
+        condition: service_healthy
     networks:
       - docker-fastapi-base
+    restart: unless-stopped
 
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+    container_name: app_nextjs_frontend
     ports:
       - "3000:3000"
     environment:
-      - NEXT_PUBLIC_API_URL=http://localhost:8000/api
+      - NEXT_PUBLIC_API_URL=http://localhost:8000
     depends_on:
       - backend
     networks:
       - docker-fastapi-base
+    restart: unless-stopped
 
 volumes:
   db-data:
