@@ -9,6 +9,7 @@ import { Star } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 
 // New Components
+import { Navbar } from "@/components/Navbar";
 import { PropertyHero } from "@/components/property/PropertyHero";
 import { PropertyHeader } from "@/components/property/PropertyHeader";
 import { PropertyInfo } from "@/components/property/PropertyInfo";
@@ -41,26 +42,9 @@ export default function PropertyPage({ params }: { params: Promise<{ id: string 
 
     return (
         <div className="min-h-screen bg-white font-sans text-gray-900">
-            {/* Navigation */}
-            <nav className="border-b border-gray-100 py-4 mb-6">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
-                    <div className="text-xl font-bold tracking-tight text-flex-green font-serif">flex living</div>
-                    <div className="hidden md:flex gap-6 text-sm font-medium text-gray-600">
-                        <a href="#" className="hover:text-black">Locations</a>
-                        <a href="#" className="hover:text-black">About</a>
-                        <a href="#" className="hover:text-black">Corporate</a>
-                        <a href="#" className="hover:text-black">Blog</a>
-                    </div>
-                    <div className="flex gap-4">
-                        <Link href="/admin">
-                            <Button variant="ghost" size="sm">Admin</Button>
-                        </Link>
-                        <Button className="rounded-full px-6 bg-flex-green hover:bg-flex-green/90 text-white">Book Now</Button>
-                    </div>
-                </div>
-            </nav>
+            <Navbar />
 
-            <main className="max-w-7xl mx-auto px-6 sm:px-6 lg:px-8 pb-20">
+            <main className="max-w-7xl mx-auto px-6 sm:px-6 lg:px-8 pb-20 pt-28">
 
                 {/* Hero Images */}
                 <div className="mb-8">

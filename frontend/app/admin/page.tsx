@@ -27,8 +27,14 @@ export default function AdminDashboard() {
 
     return (
         <div>
-            <div className="mb-6">
+            <div className="flex justify-between items-center mb-6">
                 <h1 className="text-2xl font-bold text-gray-900">Reviews Overview ({total})</h1>
+                <a
+                    href="/admin/insights"
+                    className="text-sm font-medium text-blue-600 hover:text-blue-800 hover:underline"
+                >
+                    View Detailed Analytics →
+                </a>
             </div>
 
             {error && (
@@ -40,13 +46,13 @@ export default function AdminDashboard() {
             <StatsCards stats={stats} />
 
             {/* Chart and Review List Side by Side */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <div className="lg:col-span-1 h-96">
+            <div className="flex flex-row gap-8">
+                <div className="flex-1 h-96 sticky top-6">
                     <RatingTrendChart stats={stats} />
                 </div>
 
                 {/* Review Management Section */}
-                <div className="lg:col-span-1">
+                <div className="flex-1">
                     <div className="bg-white rounded-lg shadow p-6 h-full flex flex-col">
                         <div className="flex justify-between items-center mb-6">
                             <h2 className="text-xl font-semibold text-gray-800">Review Management ({total})</h2>
@@ -56,7 +62,7 @@ export default function AdminDashboard() {
                             <FilterBar />
                         </div>
 
-                        <div className="space-y-4 mb-4 flex-1 overflow-y-auto max-h-96">
+                        <div className="space-y-4 mb-4 flex-1">
                             {reviews.length === 0 && !loading ? (
                                 <p className="text-center text-gray-500 py-10">No reviews found.</p>
                             ) : (

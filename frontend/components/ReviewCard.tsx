@@ -19,7 +19,7 @@ export const ReviewCard = ({ review, isAdmin, onToggleVisibility }: ReviewCardPr
     };
 
     return (
-        <div className={`py-8 border-b border-gray-100 ${!review.is_displayed && isAdmin ? 'opacity-50' : ''}`}>
+        <div className={`py-8 border-b border-gray-100`}>
             <div className="flex justify-between items-start mb-3">
                 <div className="flex items-center gap-3">
                     <div className="h-10 w-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 font-medium text-sm">
@@ -36,7 +36,7 @@ export const ReviewCard = ({ review, isAdmin, onToggleVisibility }: ReviewCardPr
                         <SourceBadge channelId={review.channel_id} />
                     </div>
                     {isAdmin && onToggleVisibility && (
-                        <div className="flex items-center">
+                        <div className="flex flex-col items-center">
                             <span className="text-xs mr-2 text-gray-500">
                                 {review.is_displayed ? 'Visible' : 'Hidden'}
                             </span>

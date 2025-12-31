@@ -6,7 +6,7 @@ export const FilterBar = () => {
     const { filters, setFilters } = useReviewsStore();
 
     return (
-        <div className="flex flex-wrap gap-4 items-center p-4 bg-white border border-gray-100 rounded-lg shadow-sm mb-6">
+        <div className="flex flex-wrap gap-4 items-center p-4 bg-white border border-gray-100 rounded-lg shadow-sm mb-6 text-gray-500">
             <span className="text-sm font-medium text-gray-700">Filters:</span>
 
             {/* Channel Filter */}
@@ -39,7 +39,7 @@ export const FilterBar = () => {
                 <select
                     className="h-9 rounded-md border border-gray-200 text-sm focus:outline-none focus:ring-1 focus:ring-black px-2"
                     value={filters.sort_by}
-                    onChange={(e) => setFilters({ sort_by: e.target.value as any })}
+                    onChange={(e) => setFilters({ sort_by: e.target.value as 'submitted_at' | 'rating' })}
                 >
                     <option value="submitted_at">Date</option>
                     <option value="rating">Rating</option>

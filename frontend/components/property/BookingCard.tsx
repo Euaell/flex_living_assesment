@@ -1,55 +1,52 @@
 import { Button } from "@/components/ui/Button";
-import { ChevronDown, Star } from "lucide-react";
+import { ChevronDown, Calendar, User, MessageCircle, ShieldCheck } from "lucide-react";
 
 export function BookingCard({ price = 250, rating = 4.92, reviews = 42 }) {
     return (
-        <div className="sticky top-24 bg-white rounded-xl shadow-[0_6px_16px_rgba(0,0,0,0.12)] border border-gray-200 p-6">
-            <div className="flex justify-between items-start mb-6">
-                <div>
-                    <span className="text-2xl font-bold font-serif text-flex-green">£{price}</span>
-                    <span className="text-gray-500"> / night</span>
-                </div>
-                <div className="flex items-center gap-1 text-sm font-medium">
-                    <Star size={14} className="fill-black text-black" />
-                    <span>{rating}</span>
-                    <span className="text-gray-400">·</span>
-                    <span className="text-gray-500 underlined">{reviews} reviews</span>
-                </div>
+        <div className="sticky top-24 bg-white rounded-xl shadow-[0_6px_16px_rgba(0,0,0,0.12)] overflow-hidden border border-gray-100">
+            {/* Header Section */}
+            <div className="bg-flex-green p-6 text-white">
+                <h2 className="text-xl font-bold font-serif mb-1">Book Your Stay</h2>
+                <p className="text-sm opacity-90">Select dates to see prices</p>
             </div>
 
-            <div className="border border-gray-400 rounded-lg mb-4 overflow-hidden">
-                <div className="grid grid-cols-2 border-b border-gray-400">
-                    <div className="p-3 border-r border-gray-400 hover:bg-gray-50 cursor-pointer transition-colors">
-                        <div className="text-[10px] uppercase font-bold text-gray-800">Check-in</div>
-                        <div className="text-sm text-gray-600">Add date</div>
+            <div className="p-6">
+                {/* Inputs Grid */}
+                <div className="space-y-4 mb-6">
+                    {/* Date Selector */}
+                    <div className="bg-[#F3F4F6] rounded-lg p-3 flex items-center gap-3 cursor-pointer hover:bg-gray-200 transition-colors">
+                        <Calendar size={18} className="text-gray-500" />
+                        <span className="text-gray-600 text-sm font-medium">Select dates</span>
                     </div>
-                    <div className="p-3 hover:bg-gray-50 cursor-pointer transition-colors">
-                        <div className="text-[10px] uppercase font-bold text-gray-800">Checkout</div>
-                        <div className="text-sm text-gray-600">Add date</div>
+
+                    {/* Guest Selector */}
+                    <div className="bg-[#F3F4F6] rounded-lg p-3 flex items-center justify-between cursor-pointer hover:bg-gray-200 transition-colors">
+                        <div className="flex items-center gap-3">
+                            <User size={18} className="text-gray-500" />
+                            <span className="text-gray-900 text-sm font-medium">1</span>
+                        </div>
+                        <ChevronDown size={18} className="text-gray-400" />
                     </div>
                 </div>
-                <div className="p-3 hover:bg-gray-50 cursor-pointer transition-colors flex justify-between items-center">
-                    <div>
-                        <div className="text-[10px] uppercase font-bold text-gray-800">Guests</div>
-                        <div className="text-sm text-gray-600">1 guest</div>
-                    </div>
-                    <ChevronDown size={16} className="text-gray-500" />
-                </div>
-            </div>
 
-            <Button className="w-full bg-flex-green hover:bg-flex-green/90 text-white rounded-lg py-6 text-lg font-medium mb-4 cursor-pointer">
-                Check availability
-            </Button>
-
-            <div className="text-center">
-                <Button variant="ghost" className="text-gray-500 underline decoration-gray-300 hover:text-gray-800 hover:decoration-gray-800">
-                    Send inquiry
+                {/* Primary Action */}
+                <Button className="w-full bg-[#8E9B9A] hover:bg-[#7D8A89] text-white rounded-lg py-6 text-base font-semibold mb-4 cursor-pointer gap-2">
+                    <Calendar size={18} />
+                    Check availability
                 </Button>
-            </div>
 
-            <div className="mt-4 flex items-center justify-center gap-2 text-xs text-gray-400">
-                <div className="w-4 h-4 rounded-full border border-gray-300 flex items-center justify-center">?</div>
-                <span>Free cancellation for 48 hours</span>
+                {/* Secondary Action */}
+                <div className="text-center">
+                    <Button variant="outline" className="w-full border-gray-300 py-6 text-gray-700 hover:bg-gray-50 gap-2 font-medium">
+                        <MessageCircle size={18} />
+                        Send Inquiry
+                    </Button>
+                </div>
+
+                <div className="mt-6 flex items-center justify-center gap-2 text-xs text-gray-500">
+                    <ShieldCheck size={14} />
+                    <span>Instant booking confirmation</span>
+                </div>
             </div>
         </div>
     );
